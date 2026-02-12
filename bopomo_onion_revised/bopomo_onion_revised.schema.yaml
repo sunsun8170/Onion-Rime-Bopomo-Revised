@@ -4,30 +4,37 @@
 schema:
   schema_id: bopomo_onion_revised
   name: "注音"
-  version: "202405"
+  version: "202601"
   author:
-    - 『洋蔥、Young』
+    - 『洋蔥』， Modified by sunsun8170
   description: |
     注音符號輸入，採用「大千式」鍵盤排列。
-    以《洋蔥純注音版》為基礎，刪除倉頡輸入法與反查功能，並將《洋蔥注音 Plus 版》的「完整 -> 精簡」與「🈚️ -> 🈶️」功能新增至此
+    功能調整：
+    1. 在選單中僅保留常用選項，關閉《洋蔥純注音版》的中英文切換選項與半形全形切換選項
+    2. 移除了《洋蔥純注音版》的倉頡輸入法，反查功能也一併移除
+    3. 將《洋蔥注音 Plus 版》的「完整 -> 精簡」與「🈚️ -> 🈶️」功能新增至此
+    4. 將《洋蔥注音 Plus 版》的特定 filter 移植自此，解決部分候選字不正確顯示（如：「᰼᰼」）之問題
 
 switches:
   - name: ascii_mode
     reset: 0
-    states: ["中文", "英文"]
+#    states: ["中文", "英文"] #! 關閉中英文切換選單，只可透過組合鍵（於 default.custom.yaml 設定）來進行切換，有需求者可透過取消註解來啟用
   - name: full_shape
     reset: 0
     states: ["半形", "全形"]
   - name: ascii_punct
     reset: 0
-    states: ["。，", "．，"]
+#    states: ["。，", "．，"] #! 關閉標點符號切換選單，只可透過組合鍵（於 default.custom.yaml 設定）來進行切換，有需求者可透過取消註解來啟用
   - name: simplification
     reset: 0
     states: ["繁體", "简体"]
-  - name: character_range_bhjm
+  #! 新增「完整 -> 精簡」功能，移植自《洋蔥注音 Plus 版》
+  #! 此處預設為精簡並關閉選單，建議安裝含有 CJK 擴展漢字的字型後，再透過取消註解來啟用選單選擇「完整」，否則會無法正確顯示極冷門漢字
+  - name: character_range_bhjm 
     reset: 1
-    states: ["完整", "精簡"]
-  - name: emoji_segestion
+#    states: ["完整", "精簡"] 
+  #! 新增「🈚️ -> 🈶️」功能，移植自《洋蔥注音 Plus 版》
+  - name: emoji_segestion 
     reset: 1
     states: [ 🈚️, 🈶️ ]
 #   - options: [ utf8, big5, gbk ]
@@ -41,9 +48,11 @@ engine:
   filters:
 #     - charset_filter@big5
 #     - charset_filter@gbk
-    - simplifier@character_range_bhjm
-    - simplifier@emoji_switch
+    - simplifier@character_range_bhjm #! 「完整 -> 精簡」功能所搭配的 filter，移植自《洋蔥注音 Plus 版》
+    - lua_filter@mix_cf2_miss_filter #! 去除 opencc 轉換後留下的「᰼᰼」以及補上標點符號因直上和 opencc 衝突沒附註之選項，移植自《洋蔥注音 Plus 版》
+    - simplifier@emoji_switch #! 「🈚️ -> 🈶️」功能所搭配的 filter，移植自《洋蔥注音 Plus 版》
     - simplifier@zh_cn
+    # - reverse_lookup_filter@bpm_reverse_lookup #! 自《洋蔥純注音版》移除「反查」功能所搭配的 filter
     - uniquifier
   processors:
     - ascii_composer
@@ -59,11 +68,14 @@ engine:
     - ascii_segmentor
     - matcher
     - abc_segmentor
+    # - affix_segmentor@reverse2_lookup #! 自《洋蔥純注音版》移除「反查」功能所搭配的 segmentor
     - punct_segmentor
     - fallback_segmentor
   translators:
+    # - predict_translator
     - punct_translator
     # - table_translator@custom_phrase
+    # - script_translator@reverse2_lookup #! 自《洋蔥純注音版》移除「反查」功能所搭配的 translator
     - script_translator
 ################################### 濾鏡 ######################################
 zh_cn:
@@ -71,11 +83,13 @@ zh_cn:
   tips: all
   tags: [ abc ]
 
+#! 「完整 -> 精簡」功能所搭配的濾鏡，移植自《洋蔥注音 Plus 版》
 character_range_bhjm:
   opencc_config: ocm_moedict_big5e_hkscs_jis.json #s2tw.json #t2tw.json
   option_name: character_range_bhjm
   tags: [ abc ]
 
+#! 「🈚️ -> 🈶️」功能所搭配的濾鏡，移植自《洋蔥注音 Plus 版》
 emoji_switch:
   opencc_config: emoji_t.json
   option_name: emoji_segestion
@@ -90,10 +104,10 @@ emoji_switch:
 menu:
   # alternative_select_keys: "QAZWSXEDCRFV3467"  #刻意讓「3467」置後，使聲調後按「3467」不上屏選字。
   # alternative_select_keys: "QAZWSXEDCRFV"
-  # alternative_select_labels: [ QY, AH, ZN, WU, SJ, XM ] # 預設
-  # page_size: 6 # 預設
-  alternative_select_keys: "123456789" # 新增從數字鍵盤選取候選字之方法
-  page_size: 9
+  # alternative_select_labels: [ QY, AH, ZN, WU, SJ, XM ] #! 自《洋蔥純注音版》移除預設候選字選單標籤
+  alternative_select_keys: "123456789" #! 新增從數字鍵盤選取候選字之方法
+  # page_size: 6
+  page_size: 9 #! 修改預設候選字選單顯示數量
 ################################### 拼寫 ######################################
 speller:
   alphabet: "1qaz2wsxedcrfv5tgbyhnujm8ik,9ol.0p;/-3467 "
@@ -170,6 +184,54 @@ translator:
 #   enable_completion: false
 #   enable_sentence: false
 #   initial_quality: 1
+
+#! 自《洋蔥純注音版》移除「反查」功能
+################################ 以下為使用ooo反查注音 #############################
+# reverse2_lookup:
+#   tag: reverse2_lookup
+#   dictionary: cangjie5
+#   # enable_charset_filter: false
+#   enable_completion: false
+#   enable_user_dict: true
+#   prefix: "="
+#   suffix: " "
+#   tips: "《反查》"
+#   preedit_format:
+# #    - "xlit|abcdefghijklmnopqrstuvwxyz|ABCDEFGHIJKLMNOPQRSTUVWXYZ|"
+#     - "xlit|abcdefghijklmnopqrstuvwxyz|日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜符|"
+#     - xform/^/《反查》/
+#     - 'xform/\\/ /'
+
+# bpm_reverse_lookup:
+#   tags: [ reverse2_lookup ]
+#   overwrite_comment: true
+#   dictionary: bopomo_onion.extended
+#   comment_format:
+#     - xform/iu/iU/ #iou
+#     - xform/ui/uI/ #uei
+#     - xform/ong/ung/
+#     - xform/yi?/i/
+#     - xform/wu?/u/
+#     - xform/iu/v/
+#     - xform/([jqx])u/$1v/
+#     - xform/([iuv])n/$1en/
+#     - xform/zhi?/Z/
+#     - xform/chi?/C/
+#     - xform/shi?/S/
+#     - xform/([zcsr])i/$1/
+#     - xform/ai/A/
+#     - xform/ei/I/
+#     - xform/ao/O/
+#     - xform/ou/U/
+#     - xform/ang/K/
+#     - xform/eng/G/
+#     - xform/an/M/
+#     - xform/en/N/
+#     - xform/er/R/
+#     - xform/eh/E/
+#     - xform/([iv])e/$1E/
+#     - xform/1//
+#     - 'xlit|bpmfdtnlgkhjqxZCSrzcsiuvaoeEAIOUMNKGR2345|ㄅㄆㄇㄈㄉㄊㄋㄌㄍㄎㄏㄐㄑㄒㄓㄔㄕㄖㄗㄘㄙㄧㄨㄩㄚㄛㄜㄝㄞㄟㄠㄡㄢㄣㄤㄥㄦˊˇˋ˙|'
 
 ################################### 符號處理 ####################################
 punctuator:
@@ -348,7 +410,13 @@ recognizer:
     url: "^(https?:|ftp:|mailto:|file:).*$"
     email: "^[a-z][-_.0-9a-z]*@.*$"
     punct: "(?<![=`])``?[-,;/0-9a-z]*$|[[][[]?'?$|[]][]]?'?$|[[][]]$|[[][[][]][]]$|[[]'[]]'$|[[][[]'[]][]]'$|'''?$|===?$|=``?$|=''?$|=''?=''?$|=[][][][]?$|=[][][][]?=[][][][]?$|=[-,./;][-,./;]? ?$|=,,=[.][.] ?$|=[0-9] ?$|=9=0 ?$|==[].,90'[]+ ?$"
+    # reverse2_lookup: "=[a-z]* ?$" #! 自《洋蔥純注音版》移除「反查」功能
 #    lua: "^'/[';]?[a-z0-9./-]*$"
+
+# predictor:
+#   db: predict_office.db  #predict.db  #文件名，predict db file in user directory/shared directory
+#   max_candidates: 0  #5  #每次預測的最大候選項數量，0表示全部候選項
+#   max_iterations: 0  #1  #最大預測次數，0表示不限制
 
 # __patch:
 #   # 使用八股文語言模型
