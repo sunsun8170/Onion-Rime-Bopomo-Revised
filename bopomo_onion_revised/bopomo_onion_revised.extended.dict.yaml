@@ -1,7 +1,7 @@
 # Rime dictionary
 # encoding: utf-8
 # 《洋蔥純注音修改版 字詞庫匯入頁》
-# 『洋蔥、Young』製作
+# 『洋蔥』製作，Modified by sunsun8170
 # 中文字詞標註使用拼音
 ---
 name: bopomo_onion_revised.extended
@@ -13,7 +13,7 @@ import_tables:
   - terra_pinyin_onion
   - terra_pinyin_onion_add
   - mixin_bpmf  #內嵌注音文，混打。
-  - phrases.chtp
+  - phrases.chtp #! 新增中文詞庫，移植自《洋蔥注音 Plus 版》
 #  - phrases.cht
 ...
 ##### 測試字（測試是否少掉台灣以外的用字） #####
