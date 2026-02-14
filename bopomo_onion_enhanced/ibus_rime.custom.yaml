@@ -1,0 +1,5 @@
+patch:
+  style:
+    - cursor_type: insert
+    - horizontal: false
+    - preedit_style: composition
