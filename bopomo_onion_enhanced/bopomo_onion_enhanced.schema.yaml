@@ -1,8 +1,8 @@
 # Rime schema settings
 # encoding: utf-8
-# 《洋蔥純注音修改版 設定頁》
+# 《洋蔥純注音增強版 設定頁》
 schema:
-  schema_id: bopomo_onion_revised
+  schema_id: bopomo_onion_enhanced
   name: "注音"
   version: "202601"
   author:
@@ -167,8 +167,8 @@ speller:
     - 'xlit|bpmfdtnlgkhjqxZCSrzcsiuvaoeEAIOUMNKGR12345|1qaz2wsxedcrfv5tgbyhnujm8ik,9ol.0p;/- 6347|'
 ################################### 主翻譯器 ###################################
 translator:
-  dictionary: bopomo_onion_revised.extended
-  prism: bopomo_onion_revised
+  dictionary: bopomo_onion_enhanced.extended
+  prism: bopomo_onion_enhanced
   # enable_charset_filter: false
   enable_completion: false #新版有長詞補全，用此關閉
   enable_user_dict: true
@@ -179,7 +179,7 @@ translator:
 ############################## 以下為短語 ##########################################
 # custom_phrase:
 #   dictionary: ""
-#   user_dict: bopomo_onion_revised_phrase
+#   user_dict: bopomo_onion_enhanced_phrase
 #   db_class: stabledb
 #   enable_completion: false
 #   enable_sentence: false
@@ -205,7 +205,7 @@ translator:
 # bpm_reverse_lookup:
 #   tags: [ reverse2_lookup ]
 #   overwrite_comment: true
-#   dictionary: bopomo_onion.extended
+#   dictionary: bopomo_onion_enhanced.extended
 #   comment_format:
 #     - xform/iu/iU/ #iou
 #     - xform/ui/uI/ #uei
@@ -235,7 +235,7 @@ translator:
 
 ################################### 符號處理 ####################################
 punctuator:
-  import_preset: bopomo_onion_revised_symbols
+  import_preset: bopomo_onion_enhanced_symbols
   full_shape:
     "=" : [ "＝", "々", "〃", "〻" ]
     "[" : [ "「", 〈, 〔, "‘", ［, ｛, ＜, （, ﹝, ﹛, ﹤, ﹙, ‹, ˂, "⁽", "₍", "⁅", "｢", "[", "{", "<", "(" ]
@@ -422,4 +422,4 @@ recognizer:
 #   # 使用八股文語言模型
 #   - grammar:/hant?
 #   # 用家自選配置
-#   - bopomo_onion_revised.custom:/patch?
+#   - bopomo_onion_enhanced.custom:/patch?

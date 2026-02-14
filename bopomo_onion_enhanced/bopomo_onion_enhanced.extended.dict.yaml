@@ -1,10 +1,10 @@
 # Rime dictionary
 # encoding: utf-8
-# 《洋蔥純注音修改版 字詞庫匯入頁》
+# 《洋蔥純注音增強版 字詞庫匯入頁》
 # 『洋蔥』製作，Modified by sunsun8170
 # 中文字詞標註使用拼音
 ---
-name: bopomo_onion_revised.extended
+name: bopomo_onion_enhanced.extended
 version: "202209"
 sort: by_weight
 vocabulary: essay-zh-hant-mc
