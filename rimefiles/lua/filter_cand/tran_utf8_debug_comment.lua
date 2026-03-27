@@ -16,13 +16,22 @@ local function tran_utf8_debug_comment(tran)
     --       and UniquifiedCandidate(cand, "uniq_unicode_debug", cand_text, debug_comment(cand) .. cand.comment) or
     --       cand
     --       )
-    if utf8.len(cand_text) == 1 then
-      cand = UniquifiedCandidate(cand, "uniq_unicode_debug", cand_text, debug_comment(cand) .. utf8_comment(cand_text) .. cand.comment)
-    else
-      cand = UniquifiedCandidate(cand, "uniq_unicode_debug", cand_text, debug_comment(cand) .. cand.comment)
-    end
-    -- local cand = UniquifiedCandidate(cand, "uniq_unicode_debug", cand_text, debug_comment(cand) .. utf8_comment(cand_text) .. cand.comment)
-    yield(cand)
+    -- --- 寫法一
+    -- local cand = cand  -- 於「Lua 5.5」須避免重新賦值 for 迴圈變數 cand。（for 迴圈中的控制變數是唯讀的。如果需要更改它，請在循環體中聲明一個同名的「局部變數」。）
+    -- if utf8.len(cand_text) == 1 then
+    --   cand = UniquifiedCandidate(cand, "uniq_unicode_debug", cand_text, debug_comment(cand) .. utf8_comment(cand_text) .. cand.comment)
+    -- else
+    --   cand = UniquifiedCandidate(cand, "uniq_unicode_debug", cand_text, debug_comment(cand) .. cand.comment)
+    -- end
+    -- -- local cand = UniquifiedCandidate(cand, "uniq_unicode_debug", cand_text, debug_comment(cand) .. utf8_comment(cand_text) .. cand.comment)
+    -- yield(cand)
+    --- 寫法二
+    local u_cand = utf8.len(cand_text) == 1 and UniquifiedCandidate(cand, "uniq_unicode_debug", cand_text, debug_comment(cand) .. utf8_comment(cand_text) .. cand.comment)
+                                             or UniquifiedCandidate(cand, "uniq_unicode_debug", cand_text, debug_comment(cand) .. cand.comment)
+    yield(u_cand)
+    -- --- 寫法三
+    -- yield( utf8.len(cand_text) == 1 and UniquifiedCandidate(cand, "uniq_unicode_debug", cand_text, debug_comment(cand) .. utf8_comment(cand_text) .. cand.comment) or
+    --                                     UniquifiedCandidate(cand, "uniq_unicode_debug", cand_text, debug_comment(cand) .. cand.comment) )
   end
 end
 

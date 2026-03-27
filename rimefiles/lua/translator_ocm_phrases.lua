@@ -8,6 +8,7 @@ local function translate(inp, seg, env)
   -- local inp = string.gsub(inp, ";$", "")
 
   for cand in env.tran:query(inp, seg):iter() do
+    local cand = cand  -- 不確定？  -- 於「Lua 5.5」須避免重新賦值 for 迴圈變數 cand。（for 迴圈中的控制變數是唯讀的。如果需要更改它，請在循環體中聲明一個同名的「局部變數」。）
     -- cand.comment = "『自定义』"
     -- cand.text = cand.text .. "、"
     -- cand.preedit = "、、"
