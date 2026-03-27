@@ -41,6 +41,7 @@
 
 ### 2. 方案放置路徑
 
+* 下載完成後，請先至該資料夾當中，使用 python 執行 `sort_rime_file.py`。
 * 《注音 洋蔥純注音增強版》所需檔案位於 `bopomo_onion_enhanced` 資料夾。
 * 《注音 洋蔥 Plus 輕量版》所需檔案位於 `bopomo_onionplus_lightweight` 資料夾。
 
